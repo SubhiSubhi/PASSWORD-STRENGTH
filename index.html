@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title> Complex Form Validation and Dynamic DOM Manipulation</title>
+<style>
+    /* Global styles */
+    body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
+    .container {
+        max-width: 800px;
+        margin: 20px auto;
+        padding: 20px;
+        background-color: aqua; /* Aqua background color */
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h2 {
+        color: #333;
+        text-align: center;
+    }
+    form {
+        display: flex;
+        flex-direction: column;
+    }
+    label {
+        margin-bottom: 5px;
+        color: #333;
+    }
+    input, button {
+        margin-bottom: 10px;
+        padding: 5px;
+        font-size: 16px;
+    }
+    .error {
+        color: red;
+        margin-bottom: 5px;
+    }
+</style>
+</head>
+<body>
+<div class="container">
+    <h2>Registration Form</h2>
+    <form id="registration-form">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="username" required>
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+        <div id="password-strength" class="error"></div>
+        <label for="confirm-password">Confirm Password:</label>
+        <input type="password" id="confirm-password" name="confirm-password" required>
+        <div id="password-match" class="error"></div>
+        <button type="submit">Register</button>
+    </form>
+</div>
+
+<script>
+    // JavaScript for form validation and dynamic updates
+    const passwordInput = document.getElementById('password');
+    const confirmPasswordInput = document.getElementById('confirm-password');
+    const passwordStrength = document.getElementById('password-strength');
+    const passwordMatch = document.getElementById('password-match');
+    const form = document.getElementById('registration-form');
+
+    // Function to check password strength
+    function checkPasswordStrength(password) {
+        // Simplified check for demonstration purposes
+        return password.length >= 8;
+    }
+
+    // Function to update password strength message
+    function updatePasswordStrength() {
+        if (checkPasswordStrength(passwordInput.value)) {
+            passwordStrength.textContent = '';
+        } else {
+            passwordStrength.textContent = 'Password must be at least 8 characters long';
+        }
+    }
+
+    // Function to check if passwords match
+    function checkPasswordMatch() {
+        if (passwordInput.value !== confirmPasswordInput.value) {
+            passwordMatch.textContent = 'Passwords do not match';
+        } else {
+            passwordMatch.textContent = '';
+        }
+    }
+
+    // Event listeners for input fields
+    passwordInput.addEventListener('input', updatePasswordStrength);
+    confirmPasswordInput.addEventListener('input', checkPasswordMatch);
+
+    // Form submission event listener
+    form.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent form submission
+        // Perform additional validation if needed
+        if (checkPasswordStrength(passwordInput.value) && passwordInput.value === confirmPasswordInput.value) {
+            alert('Form submitted successfully!');
+            form.reset(); // Reset form
+        } else {
+            alert('Form submission failed. Please check your inputs.');
+        }
+    });
+</script>
+</body>
+</html>
